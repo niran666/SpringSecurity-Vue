@@ -16,11 +16,11 @@ public class UnauthorizedEntryPoint implements AuthenticationEntryPoint {
     private Logger logger = LoggerFactory.getLogger(getClass());
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        logger.info("************非法访问*******************");
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin","http://localhost:8080");
         response.setHeader("Access-Control-Expose-Headers","*");
         response.setHeader("Access-Control-Allow-Credentials","true");
+        response.setHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS,PUT,DELETE");
         response.getWriter().write(JSON.toJSONString(new Result(false,"非法访问")));
 
     }

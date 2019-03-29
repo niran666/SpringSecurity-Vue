@@ -20,36 +20,44 @@
     name: "Login",
     data() {
       return {
-          form:{
-              username:'',
-              password:''
-          }
+        form: {
+          username: '',
+          password: ''
+        }
       };
     },
-
-
     methods: {
-          onSubmit(){
-            this.$http.post('http://localhost:8888/login',this.form).then((res) => {
-                console.log(res);
-                console.log(this);
-        })
-     
-      },
+      onSubmit() {
+        this.$http.post('http://localhost:8888/login', this.form).then((res) => {
+          console.log(res.data);
+          if (res.data.ok) {
+            if (res.data.data.identity == "user") {
+              this.$router.push('/menu');
+            } else if (res.data.data.identity == "admin") {
+              this.$router.push('/admin_menu')
+            }
+          } else {
+            this.$message.error('账户异常');
+          }
 
+        }).catch(function (error) {
+          console.log(error);
+          console.log(error);
+        });
+
+      },
     },
-    
   }
 
 </script>
 <style lang="scss" scoped>
-.login-box{
+  .login-box {
     width: 350px;
     margin: 180px auto;
     border: 1px solid #DCDFE6;
     padding: 35px;
     border-radius: 5px;
-    box-shadow: 0 0 25px #DCDFE6; 
-}
+    box-shadow: 0 0 25px #DCDFE6;
+  }
 
 </style>

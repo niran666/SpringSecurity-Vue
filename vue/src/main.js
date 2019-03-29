@@ -10,7 +10,6 @@ import axios from 'axios' ;
 import Vuex from 'vuex' ;
 import qs from 'qs'
 import VueCookies from 'vue-cookies'
-
 axios.defaults.withCredentials=true;
 Vue.use(VueCookies)
 Vue.config.productionTip = false
@@ -19,10 +18,6 @@ Vue.use(ElementUI);
 Vue.use(VueRouter);
 
 axios.interceptors.request.use((config) => {
-  // config.headers["Access-Control-Allow-Origin"]="*";
-  // config.headers["Access-Control-Allow-Headers"]="Content-Type,Content-Length, Authorization, Accept,X-Requested-With";
-  // config.headers["Access-Control-Allow-Methods"]="PUT,POST,GET,DELETE,OPTIONS";
-  // config.headers["Access-Control-Allow-Origin"]="*";
   if(config.method  === 'post'){
     config.data = qs.stringify(config.data);
   }
@@ -32,17 +27,15 @@ axios.interceptors.request.use((config) => {
 });
 
 axios.interceptors.response.use( (response) => {
-    console.log('response拦截器11111111111')
-    console.log(response)
-    if(response.data.msg=="登陆过期" || response.data.msg=="非法访问"){
-
-      // iView.Notice.error({title: '请求验证未通过',desc:response.data.msg,duration: 5});
-      router.replace({ //跳转到登录页面
-        path: '/login',
-        query: {redirect: router.currentRoute.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
-      });
+    console.log(response);
+    if(response.data.msg=="非法访问"||response.data.msg==="登陆过期")
+    {
+    //   router.replace({
+    //     path: 'login',
+    //     query: {redirect: router.currentRoute.fullPath}
+    // })
+       router.push('/login');
     }
-
     return response;
   },
   error => {

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class AccountServiceImpl implements AccountService {
@@ -29,6 +31,37 @@ public class AccountServiceImpl implements AccountService {
     }
     public Account findByName(String username)
     {
-        return accountRepository.findAccountByUsername(username);
+        Account account=accountRepository.findAccountByUsername(username);
+        return account;
+    }
+    public List<Account> findAll(){
+        return accountRepository.findAll();
+    }
+    @Override
+    public Boolean updateAccount(Account account){
+        Account account2 = accountRepository.findAccountById(account.getId());
+        if(account2!=null)
+        {
+            account.setUsername(account2.getUsername());
+            account.setPassword(account2.getPassword());
+            account.setIdentity(account2.getIdentity());
+            if(account2.getRole()!=null)
+            {
+                account.getRole().setId(account2.getRole().getId());
+            }
+            account=accountRepository.save(account);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean deleteAccountById(Integer id){
+        if(accountRepository.deleteAccountById(id)==1)
+            return true;
+        else
+            return false;
     }
 }

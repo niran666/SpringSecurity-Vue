@@ -25,15 +25,16 @@ public class MyAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailu
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
         logger.info("进入认证失败处理类");
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+//        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.setStatus(200);
         response.setContentType("application/json;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin","http://localhost:8080");
         response.setHeader("Access-Control-Expose-Headers","*");
         response.setHeader("Access-Control-Allow-Credentials","true");
         System.out.println(exception.getLocalizedMessage());
-        response.getWriter().write( JSON.toJSONString(new Result(objectMapper.writeValueAsString(exception.getLocalizedMessage()))));
-        System.out.println(JSON.toJSONString(new Result(exception.getLocalizedMessage())));
+        response.getWriter().write( JSON.toJSONString(new Result(false,exception.getLocalizedMessage())));
+        System.out.println(JSON.toJSONString(new Result(false,exception.getLocalizedMessage())));
 //        response.getWriter().write(objectMapper.writeValueAsString(exception));
         return;
     }

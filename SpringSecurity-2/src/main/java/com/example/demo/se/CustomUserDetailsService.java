@@ -30,12 +30,17 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("用户名不存在");
         }
 //      返回UserDetails实现类
+        Boolean lock;
+        if(user.getStatus().equals("正常"))
+            lock=true;
+        else
+            lock =false;
         return new User(user.getUsername(), // 用户名
                 user.getPassword(), // 密码
                 true, // 是否可用
                 true, // 账号是否过期
                 true, // 密码是否过期
-                true, // 账号没有被锁定标志
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                lock, // 账号没有被锁定标志
+                AuthorityUtils.commaSeparatedStringToAuthorityList(user.getIdentity()));
     }
 }
